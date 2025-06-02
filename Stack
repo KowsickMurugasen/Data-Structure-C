@@ -1,0 +1,106 @@
+#include <stdio.h>
+#include <stdlib.h>
+// Node
+struct Node {
+    int data;
+    struct Node *prev;
+    struct Node *next;
+};
+struct Node *head = NULL;
+struct Node *tail = NULL;
+// Push(insert at beginning)
+void Push(int data) {
+    struct Node *newNode=(struct Node*)malloc(sizeof(struct Node));
+    newNode->data=data;
+    newNode->prev=NULL;
+    newNode->next=head;
+
+    if (head!=NULL)
+        head->prev=newNode;
+    else
+        tail=newNode; // first node
+    head=newNode;
+}
+
+// AtPush(insert at end)
+void AtPush(int data) {
+    struct Node *newNode=(struct Node*)malloc(sizeof(struct Node));
+    newNode->data=data;
+    newNode->next=NULL;
+    newNode->prev=tail;
+    if (tail!=NULL)
+        tail->next=newNode;
+    else
+        head=newNode; // first node
+    tail=newNode;
+}
+
+// Reverse logic
+struct Node *reverse(struct Node *curr){
+    if (curr==NULL)
+        return NULL;
+    // Swap next and prev
+    struct Node *temp=curr->prev;
+    curr->prev=curr->next;
+    curr->next=temp;
+    // If prev is now NULL, this is the new head
+    if (curr->prev==NULL)
+        return curr;
+    // Recurse
+    return reverse(curr->prev);
+}
+
+// AtReverse
+void AtReverse(){
+    tail=head;
+    head=reverse(head);
+}
+
+// Peak
+void Peak(){
+    if (head!=NULL)
+        printf("Peak: %d",head->data);
+    else
+        printf("List is empty\n");
+}
+
+// isEmpty
+void isEmpty(){
+    if (head==NULL)
+        printf("Is Empty\n");
+    else
+        printf("No");
+}
+
+// Display
+void display(){
+    struct Node *temp=head;
+    while (temp!=NULL){
+        printf("%d -> ",temp->data);
+        temp=temp->next;
+    }
+    printf("NULL");
+}
+
+// Main
+int main(){
+    Push(9);
+    Push(8);
+    Push(7);
+    Push(6);
+    AtPush(5);
+    AtPush(4);
+
+    //printf("\n");
+    display();
+
+    printf("\n");
+    AtReverse();
+    display();
+    printf("\n");
+    Peak();
+    printf("\n");
+    isEmpty();
+
+    return 0;
+}
